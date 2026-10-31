@@ -28,28 +28,12 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y git zip unzip python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev automake
 
-    # En kararlı Buildozer sürümü kurulur ve Cython temizlenir
     - name: Install Buildozer and Cython
       run: |
         pip3 install --upgrade pip
         pip3 install --user buildozer cython==0.29.36 virtualenv
 
-    # Android kütüphanelerinin (obd, pyserial) derleme sırasında eski önbellekle çakışmasını engelliyoruz
-    - name: Clear Buildozer Dist
-      run: |
-        export PATH=$PATH:~/.local/bin
-        buildozer android clean
-
     - name: Build with Buildozer
       run: |
         export PATH=$PATH:~/.local/bin
-        export JAVA_HOME=$JAVA_HOME_17_X64
         yes | buildozer -v android debug
-      env:
-        P4A_RELEASE_KEYING: 0
-
-    - name: Upload APK artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: efe-moto-diag-apk
-        path: bin/*.apk
