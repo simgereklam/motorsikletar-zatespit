@@ -58,7 +58,6 @@ def on_start(data):
     target = data.get('target', '192.168.0.10')
     if OBD_OK:
         try:
-            # Sadece bağlantı kur ve ana durumu bildir
             conn = obd.OBD(portstr=target, baudrate=38400, timeout=5)
             if conn.is_connected():
                 socketio.emit('status', {'msg': 'ECU CONNECTED'})
@@ -73,11 +72,9 @@ def start_flask():
 
 class EfeMotoApp(App):
     def build(self):
-        # Arka planda Flask sunucusunu başlat
         threading.Thread(target=start_flask, daemon=True).start()
         time.sleep(1)
         
-        # Yerel Android WebView bileşenini çağır
         PythonActivity = autoclass('org.kivy.android.PythonActivity')
         WebView = autoclass('android.webkit.WebView')
         WebViewClient = autoclass('android.webkit.WebViewClient')
