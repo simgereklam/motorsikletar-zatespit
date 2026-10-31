@@ -6,8 +6,8 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,html,js,css
 version = 1.0
 
-# Kararlı bağımlılıklar
-requirements = python3,setuptools,flask,flask-socketio,python-socketio,obd,pyserial
+# DEĞİŞİKLİK: Derleme esnasında kilitlenmeyi önlemek için hostpython3 tarifi eklendi
+requirements = python3,hostpython3,setuptools,flask,flask-socketio,python-socketio,obd,pyserial
 
 orientation = portrait
 fullscreen = 0
@@ -18,4 +18,7 @@ android.permissions = INTERNET, ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE, BLUETOO
 android.api = 33
 android.minapi = 24
 android.archs = arm64-v8a
+
+# ÇÖZÜM: Yeni Python sürümlerinin webview çökmelerini engelleyen geliştirme dalı aktif edildi
+p4a.branch = develop
 p4a.bootstrap = webview
