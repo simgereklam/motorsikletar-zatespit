@@ -28,22 +28,15 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y git zip unzip python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev automake
 
-    # DÜZELTME: Kivy/Buildozer reposunun tam adresi eksiksiz eklendi
     - name: Install Buildozer and Cython
       run: |
         pip3 install --upgrade pip
-        pip3 install git+https://github.com
-        pip3 install cython==0.29.36 virtualenv
-
-    - name: Clean Buildozer Cache
-      run: |
-        export PATH=$PATH:~/.local/bin
-        buildozer distclean
+        pip3 install --user buildozer cython==0.29.36 virtualenv
 
     - name: Build with Buildozer
       run: |
         export PATH=$PATH:~/.local/bin
-        export JAVA_HOME=$GITHUB_WORKSPACE
+        export JAVA_HOME=$JAVA_HOME_17_X64
         yes | buildozer -v android debug
       env:
         P4A_RELEASE_KEYING: 0
