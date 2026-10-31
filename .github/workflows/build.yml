@@ -2,8 +2,8 @@ name: Build APK
 
 on:
   push:
-    branches: [ main ] # main dalına her push'ta derlemeyi başlat
-  workflow_dispatch: # İstersen manuel olarak da tetikleyebilirsin
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build-android:
@@ -17,7 +17,6 @@ jobs:
       id: buildozer
       with:
         command: buildozer android debug
-      buildozer_version: master
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
