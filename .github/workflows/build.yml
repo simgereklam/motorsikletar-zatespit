@@ -21,27 +21,26 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.11'
 
-    # Ubuntu 26.04 üzerindeki olası apt kilitlenmelerini önleyen ve modern kütüphaneleri kuran adım
     - name: Install system dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y git zip unzip python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev automake
 
-    # Cython sürümü obd ve Kivy WebView derleme araçlarıyla en kararlı çalışan sürüme sabitlendi
-    - name: Install Buildozer and Cython
+    # Ubuntu 26 için en kararlı Buildozer master sürümü ve legacy paketler kurulur
+    - name: Install Buildozer and Modern Tools
       run: |
         pip3 install --upgrade pip
-        pip3 install --user buildozer cython==0.29.36 virtualenv
+        pip3 install git+https://github.com/kivy/buildozer
+        pip3 install legacy-cgi setuptools cython==0.29.36 virtualenv
 
-    # Önemli Adım: Önceki başarısız denemelerden kalan tüm hatalı kütüphane önbelleklerini sıfırlıyoruz
-    - name: Clean Buildozer Cache
+    # Sistemin eski hatalı indirmelerle çakışmaması için tam temizlik
+    - name: Reset Buildozer Environment
       run: |
         export PATH=$PATH:~/.local/bin
-        buildozer android clean
+        buildozer distclean
 
-    # Derleme adımı. Lisans onayları 'yes' ile otomatik geçilir
     - name: Build with Buildozer
       run: |
         export PATH=$PATH:~/.local/bin
@@ -50,7 +49,6 @@ jobs:
       env:
         P4A_RELEASE_KEYING: 0
 
-    # Üretilen APK dosyasını GitHub Actions paneline yükleyen adım
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
