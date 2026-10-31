@@ -23,10 +23,12 @@ jobs:
       with:
         python-version: '3.10'
 
+    # DEĞİŞİKLİK: Bulunamayan libncurses5-dev, libncursesw5-dev ve libtinfo5 listeden kaldırıldı.
+    # Yerine Ubuntu 24.04 ile tam uyumlu 'libncurses-dev' eklendi.
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git zip unzip python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev automake
+        sudo apt-get install -y git zip unzip python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake libffi-dev libssl-dev automake
 
     - name: Install Buildozer and Cython
       run: |
